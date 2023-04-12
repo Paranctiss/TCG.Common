@@ -12,7 +12,7 @@ public interface IRepository<T> where T : class
     /// <param name="id">Identifiant unique de l'entité à récupérer.</param>
     /// <param name="cancellationToken">Token d'annulation pour annuler l'opération asynchrone.</param>
     /// <returns>Task de l'entité récupérée ou null si elle n'existe pas.</returns>
-    Task<T> GetByIdAsync(string id, CancellationToken cancellationToken);
+    Task<T> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Récupère toutes les entités du type T.
@@ -43,5 +43,5 @@ public interface IRepository<T> where T : class
     /// <param name="id">Identifiant unique de l'entité à supprimer.</param>
     /// <param name="cancellationToken">Token d'annulation pour annuler l'opération asynchrone.</param>
     /// <returns>Task représentant l'opération asynchrone.</returns>
-    Task RemoveAsync(string id, CancellationToken cancellationToken);
+    Task RemoveAsync(int id, CancellationToken cancellationToken);
 }

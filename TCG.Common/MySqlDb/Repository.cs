@@ -19,7 +19,7 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     /// <inheritdoc/>
-    public async Task<T> GetByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _dbContext.Set<T>().FindAsync(id,cancellationToken);
     }
@@ -45,7 +45,7 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     /// <inheritdoc/>
-    public async Task RemoveAsync(string id, CancellationToken cancellationToken)
+    public async Task RemoveAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await GetByIdAsync(id, cancellationToken);
         if (entity != null)
