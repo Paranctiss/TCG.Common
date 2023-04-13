@@ -1,4 +1,4 @@
-namespace TCG.CatalogService.Persitence.MongoSettings;
+namespace TCG.Common.Settings;
 
 public class MongoDbSettings
 {
