@@ -25,6 +25,12 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     /// <inheritdoc/>
+    public async Task<T> GetByGUIDAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Set<T>().FindAsync(id, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Set<T>().ToListAsync(cancellationToken);
@@ -48,6 +54,17 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task RemoveAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await GetByIdAsync(id, cancellationToken);
+        if (entity != null)
+        {
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task RemoveByGUIDAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await GetByGUIDAsync(id, cancellationToken);
         if (entity != null)
         {
             _dbContext.Set<T>().Remove(entity);
