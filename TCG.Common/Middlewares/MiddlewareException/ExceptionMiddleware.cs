@@ -54,6 +54,14 @@ namespace TCG.Common.Middlewares.MiddlewareException
                         Message = notFoundException.Message
                     }.ToString());
                     break;
+                case UserAlreadyExistsException userAlreadyExistsException:
+                    context.Response.StatusCode = StatusCodes.Status409Conflict;
+                    await context.Response.WriteAsync(new ErrorDetails()
+                    {
+                        StatusCode = context.Response.StatusCode,
+                        Message = userAlreadyExistsException.Message
+                    }.ToString());
+                    break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     await context.Response.WriteAsync(new ErrorDetails()
