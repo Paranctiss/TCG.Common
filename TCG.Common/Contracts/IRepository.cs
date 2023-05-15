@@ -60,4 +60,6 @@ public interface IRepository<T> where T : class
     /// <param name="cancellationToken">Token d'annulation pour annuler l'opération asynchrone.</param>
     /// <returns>Task représentant l'opération asynchrone.</returns>
     Task RemoveByGUIDAsync(Guid id, CancellationToken cancellationToken);
+
+    Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken);
 }

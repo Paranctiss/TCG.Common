@@ -71,4 +71,22 @@ public class Repository<T> : IRepository<T> where T : class
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
+    
+    public async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken)
+    {
+        using (var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken))
+        {
+            try
+            {
+                await action();
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
+    }
 }
