@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace TCG.Common.Contracts;
 
 /// <summary>
@@ -61,5 +63,29 @@ public interface IRepository<T> where T : class
     /// <returns>Task représentant l'opération asynchrone.</returns>
     Task RemoveByGUIDAsync(Guid id, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Execute toute les fonctions au sein de la même transaction
+    /// </summary>
+    /// <param name="action">The action to execute within the transaction.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Retrieves a paginated list of public sale posts with optional sorting, filtering, and paging.
+    /// </summary>
+    /// <typeparam name="TOrderKey">Le type pour pouvoir order</typeparam>
+    /// <param name="pageNumber">Nombre de page</param>
+    /// <param name="pageSize">Nombre item par page</param>
+    /// <param name="cancellationToken">TCancellation token</param>
+    /// <param name="orderBy">Specifier le tri : orderBy (optional)</param>
+    /// <param name="descending">Le type pour order Desc or Ascend (default: true)</param>
+    /// <param name="filter">Les filtres ajouter (optional)</param>
+    /// <returns>A task representing the asynchronous operation. The result is an enumerable collection of type T.</returns>
+    Task<IEnumerable<T>> GetAllSalePostPublicAsync<TOrderKey>(
+        int pageNumber, int pageSize,
+        CancellationToken cancellationToken,
+        Expression<Func<T, TOrderKey>> orderBy = null,
+        bool descending = true,
+        Expression<Func<T, bool>> filter = null);
 }

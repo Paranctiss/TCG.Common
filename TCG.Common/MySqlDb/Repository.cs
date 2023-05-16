@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TCG.Common.Contracts;
 
@@ -70,6 +71,37 @@ public class Repository<T> : IRepository<T> where T : class
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+    }
+    
+    public async Task<IEnumerable<T>> GetAllSalePostPublicAsync<TOrderKey>(
+        int pageNumber, int pageSize,
+        CancellationToken cancellationToken,
+        Expression<Func<T, TOrderKey>> orderBy = null, 
+        bool descending = true, 
+        Expression<Func<T,bool>> filter = null)
+    {
+        var query = _dbContext.Set<T>().AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+        
+        if (orderBy != null)
+        {
+            if (descending)
+            {
+                query = query.OrderByDescending(orderBy);
+            }
+            else
+            {
+                query = query.OrderBy(orderBy);
+            }
+        }
+        return await query
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize)
+        .ToListAsync();
     }
     
     public async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken)
