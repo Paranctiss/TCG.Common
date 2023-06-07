@@ -12,8 +12,8 @@ public static class AuthentificationServiceExtention
     {
         return services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // Ajoutez cette ligne pour désactiver l'exigence HTTPS
-                options.Authority = "http://localhost:8080/auth/realms/Tcg-Place-Realm";
+                //options.RequireHttpsMetadata = false; // Ajoutez cette ligne pour désactiver l'exigence HTTPS
+                options.Authority = "https://csckeycloak.azurewebsites.net/auth/realms/Tcg-Place-Realm";
                 options.Audience = "account";
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
