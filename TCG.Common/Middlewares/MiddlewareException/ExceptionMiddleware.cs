@@ -62,6 +62,14 @@ namespace TCG.Common.Middlewares.MiddlewareException
                         Message = userAlreadyExistsException.Message
                     }.ToString());
                     break;
+                case UnAuthorizedException unAuthorizedException:
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync(new ErrorDetails()
+                    {
+                        StatusCode = context.Response.StatusCode,
+                        Message = unAuthorizedException.Message
+                    }.ToString());
+                    break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     await context.Response.WriteAsync(new ErrorDetails()
