@@ -1,3 +1,3 @@
 namespace TCG.Common.MassTransit.Messages;
 
-public record BuyerTransactionResponse(string Name);
+public record BuyerTransactionResponse(string Name, List<string> photos);
